@@ -1,5 +1,10 @@
 <template>
 	<view>
+		<view class="search-box">
+			<!-- 自定义搜索组件 -->
+			<!-- <my-search :bgcolor="'yellow'" :radius="30"></my-search> -->
+			<my-search @click="goSearch"></my-search>
+		</view>
 		<!-- 轮播图 -->
 		<view class="pyg-swiper">
 			<swiper indicator-dots autoplay circular>
@@ -69,13 +74,24 @@ export default {
 			}
 			this[list] = res.data.message;
 
-			uni.$showMsg({ title: '数据请求成功', icon: 'success' });
+			// uni.$showMsg({ title: '数据请求成功', icon: 'success' });
+		},
+		//子传过来的自定义事件 跳转到搜索页面
+		goSearch() {
+			uni.navigateTo({
+				url: '../../subpkg/search/search'
+			});
 		}
 	}
 };
 </script>
 
 <style lang="scss">
+// .search-box {
+// 	position: sticky;
+// 	top: 0;
+// 	z-index: 999;
+// }
 .pyg-swiper {
 	swiper {
 		width: 750rpx;

@@ -15,4 +15,9 @@ export default {
 <style lang="scss">
 /*每个页面公共css */
 // $themeColor: #eb4450;
+.search-box {
+	position: sticky;
+	top: 0;
+	z-index: 999;
+}
 </style>

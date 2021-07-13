@@ -1,5 +1,8 @@
 <template>
 	<view class="pyg-cate-index">
+		<!-- 自定义搜索组件 -->
+		<!-- <my-search :bgcolor="'yellow'" :radius="30"></my-search> -->
+		<my-search @click="goSearch"></my-search>
 		<!-- 分类 -->
 		<view class="pyg-cate">
 			<!-- 左侧菜单 -->
@@ -44,7 +47,8 @@ export default {
 		this.getCateList();
 		// windowHeight	可使用窗口高度
 		const { windowHeight } = uni.getSystemInfoSync();
-		this.windowHeight = windowHeight;
+		// 减去搜索组件的高度
+		this.windowHeight = windowHeight - 50;
 	},
 	methods: {
 		async getCateList() {
@@ -65,6 +69,12 @@ export default {
 			// 对与滑动组件不能赋值一样的值否则无效(不会进行滚动条重置)
 			// this.scrollTop = 0;
 			this.scrollTop = this.scrollTop ? 0 : 1;
+		},
+		//子传过来的自定义事件 跳转到搜索页面
+		goSearch() {
+			uni.navigateTo({
+				url: '../../subpkg/search/search'
+			});
 		}
 	}
 };
