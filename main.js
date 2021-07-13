@@ -17,6 +17,7 @@ $http.baseUrl = 'https://www.uinav.com/api/public/v1'
 $http.beforeRequest = function(options) {
 	uni.showLoading({
 		title: '数据加载中...',
+		mask: true
 	})
 }
 
@@ -30,6 +31,7 @@ uni.$showMsg = function(params) {
 		title: "数据请求失败",
 		duration: 1500,
 		icon: "none",
+		mask: true,
 		...params,
 	})
 }
