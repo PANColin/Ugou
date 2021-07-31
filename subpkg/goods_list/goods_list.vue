@@ -12,7 +12,7 @@
 
 <script>
 export default {
-	data() {			
+	data() {
 		return {
 			// 请求参数对象
 			queryObj: {

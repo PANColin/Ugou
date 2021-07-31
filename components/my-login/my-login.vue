@@ -4,7 +4,9 @@
 		<uni-icons type="contact-filled" size="100" color="#AFAFAF"></uni-icons>
 		<!-- 登录按钮 -->
 		<!-- 可以从 @getuserinfo 事件处理函数的形参中，获取到用户的基本信息 -->
-		<button type="primary" class="btn-login" open-type="getUserInfo" @getuserinfo="getUserInfo">一键登录</button>
+		<!-- <button type="primary" class="btn-login" open-type="getUserInfo" @getuserinfo="getUserInfo">一键登录</button>
+		 -->
+		<button type="primary" class="btn-login" plain @click="getInfo">登录</button>
 		<!-- 登录提示 -->
 		<view class="tips-text">登录后尽享更多权益</view>
 	</view>
@@ -26,18 +28,35 @@ export default {
 		// 调用 mapMutations 辅助方法，把 m_user 模块中的方法映射到当前组件中使用
 		...mapMutations('m_user', ['updateUserInfo', 'updateToken', 'updateRedirectInfo']),
 		// 获取微信用户的基本信息
-		getUserInfo(e) {
+		getInfo() {
 			// console.log(e);
-			// 判断是否获取用户信息成功
-			if (e.detail.errMsg === 'getUserInfo:fail auth deny') return uni.$showMsg({ title: '您取消了登录授权！' });
-
-			// 获取用户信息成功， e.detail.userInfo 就是用户的基本信息
-			// console.log(e.detail.userInfo);
-			// 将用户的基本信息存储到 vuex 中
-			this.updateUserInfo(e.detail.userInfo);
-			// 获取登录成功后的 Token 字符串
-			this.getToken(e.detail);
+			// console.log('1111');
+			wx.getUserProfile({
+				desc: '获取用户信息',
+				lang: 'zh_CN',
+				success: res => {
+					console.log(res);
+					// 将用户的基本信息存储到 vuex 中
+					this.updateUserInfo(res.userInfo);
+					this.getToken(res);
+				},
+				fail(res) {
+					console.log(res);
+				}
+			});
 		},
+		// getUserInfo(e) {
+		// 	// console.log(e);
+		// 	// 判断是否获取用户信息成功
+		// 	if (e.detail.errMsg === 'getUserInfo:fail auth deny') return uni.$showMsg({ title: '您取消了登录授权！' });
+
+		// 	// 获取用户信息成功， e.detail.userInfo 就是用户的基本信息
+		// 	// console.log(e.detail.userInfo);
+		// 	// 将用户的基本信息存储到 vuex 中
+		// 	this.updateUserInfo(e.detail.userInfo);
+		// 	// 获取登录成功后的 Token 字符串
+		// 	this.getToken(e.detail);
+		// },
 		// 调用登录接口，换取永久的 token
 		async getToken(info) {
 			// 调用微信登录接口
@@ -56,6 +75,7 @@ export default {
 			console.log(query);
 
 			// 换取 token 没有调用支付的权限 暂时获取为null
+			// const { data: loginResult } = await uni.request({url:'http://bufantec.com/admin/xy/lite/student/doLogin', data:query});
 			const { data: loginResult } = await uni.$http.post('/users/wxlogin', query);
 			console.log(loginResult);
 			if (loginResult.meta.status !== 200) return uni.$showMsg({ title: '登录失败！' });

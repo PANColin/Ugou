@@ -31,7 +31,7 @@ export default {
 		// 商品的信息对象
 		goods: {
 			type: Object,
-			defaul: {}
+			default: {}
 		},
 		// 是否展示图片左侧的 radio
 		showRadio: {
